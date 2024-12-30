@@ -2,6 +2,7 @@
 import argparse
 import subprocess
 from time import sleep
+import sys
 
 def main():
     args = argparse.ArgumentParser()
@@ -12,15 +13,18 @@ def main():
 
     argv = args.parse_args()
     if argv.start:
-        total = int(argv.sec) + (60* int(argv.min)) + (3600 * int(argv.hour))
-        if total == 0:
-            print("Cannot start a timer for 0 seconds")
-            exit(0)
-        else:
-            print(f"Starting a timer for {total} seconds")
-            sleep(total)
-            time_up()
-    
+        try:
+            total = int(argv.sec) + (60* int(argv.min)) + (3600 * int(argv.hour))
+            if total == 0:
+                print("Cannot start a timer for 0 seconds")
+                sys.exit(0)
+            else:
+                print(f"Starting a timer for {total} seconds")
+                for _ in range(1): sleep(total)
+                time_up()
+        except KeyboardInterrupt:
+            print('\nTimer canceled')
+            sys.exit(0)
     else:
         print("Missing Command-line Arguemnt")
         
